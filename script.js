@@ -1,7 +1,5 @@
 'use strict'
 
-
-
 const feedback = {
     poor_performance: "Keep practicing you'll improve with time!",
     average: "Not bad, but there's room for improvement.",
@@ -16,7 +14,7 @@ const fifteenSecondQuotes = [
   "The quick brown fox jumps over the lazy dog near the riverbank at dusk.",
   "Typing fast takes practice, patience, and daily effort to truly master the right flow.",
   "A smart developer keeps learning, building projects, and improving skills every single day.",
-  "Code is like poetry — clean, simple, and written with purpose and clarity in mind.",
+  "Code is like poetry clean, simple, and written with purpose and clarity in mind.",
   "The best way to grow is to challenge yourself with projects slightly above your level.",
   "Dont focus on speed at first — focus on accuracy and rhythm to build consistency.",
   "Every expert was once a beginner who kept typing, failing, and trying again each day.",
@@ -71,8 +69,9 @@ const sixtySecondQuotes = [
 
 
 const start = document.querySelector('.start');
-const stop = document.querySelector('.stop');
+const pause = document.querySelector('.pause')
 const resume = document.querySelector('.resume');
+const reset = document.querySelector('.reset')
 const replay = document.querySelector('.replay');
 const selectedTime = document.querySelector('#timer')
 const LettersWritten = document.querySelector('.type-box')
@@ -137,55 +136,39 @@ const getFeedBack = function(wpm ){
 }
 
 const generateRandomNumber = function(){
-   return Math.floor(Math.random() * 10) ;//  generating a random number between 0 to 9 both zero and 9 are inclusive
+   return Math.floor(Math.random() * 10) ;
 }
 const updateQuote = function(time){
-    if(time === 15){
-        // generate a randomnumber between 0 - 9
-        const RandomIndex = generateRandomNumber();
-        return fifteenSecondQuotes[RandomIndex];
-    }
-    else if(time === 30){
-        // generate a randomnumber between 0 - 9
-        const RandomIndex = generateRandomNumber();
-        return thirtySecondQuotes[RandomIndex];
-    }
-    else if(time === 60){
-        // generate a randomnumber between 0 - 9
-        const RandomIndex = generateRandomNumber();
-        return sixtySecondQuotes[RandomIndex];
-    }
+
+    if(time === 15)
+        return fifteenSecondQuotes[generateRandomNumber()];
+    else if(time === 30)
+        return thirtySecondQuotes[generateRandomNumber()];
+    else if(time === 60)
+        return sixtySecondQuotes[generateRandomNumber()];
+
+}
+
+const updateTheQuoteandReset = function(pickedTime){
+    displayTime.textContent = `00:${pickedTime}`
+    displayedContent.textContent = updateQuote(pickedTime);
+    wpm.textContent = '--'
+    accuracy.textContent = '--%'
+    feedback_message.textContent = 'Start typing to see feedback'
+    LettersWritten.disabled = false;
+    LettersWritten.value = "";
 }
 
 selectedTime.addEventListener("change" , function(){
     const pickedTime = Number(selectedTime.value);
 
-    if(pickedTime === 15){
-        //fetch from 15 sec object
-        displayTime.textContent = `00:${selectedTime.value}`
-        displayedContent.textContent = updateQuote(pickedTime);
-        wpm.textContent = '--'
-        accuracy.textContent = '--%'
-        feedback_message.textContent = 'Start typing to see feedback'
-        LettersWritten.value = "";
-        
-    }else if( pickedTime === 30){
-        // fetch from 30 sec object
-        displayTime.textContent = `00:${selectedTime.value}`
-        displayedContent.textContent = updateQuote(pickedTime);
-        wpm.textContent = '--'
-        accuracy.textContent = '--%'
-        feedback_message.textContent = 'Start typing to see feedback'
-        LettersWritten.value = "";
-    }else if(pickedTime === 60){
-        displayTime.textContent = `00:${selectedTime.value}`
-        displayedContent.textContent = updateQuote(pickedTime);
-        wpm.textContent = '--'
-        accuracy.textContent = '--%'
-        feedback_message.textContent = 'Start typing to see feedback';
-        LettersWritten.value = "";
-
-    }
+    if(pickedTime === 15)
+        updateTheQuoteandReset(pickedTime); 
+    else if( pickedTime === 30)
+       updateTheQuoteandReset(pickedTime);
+    else if(pickedTime === 60)
+       updateTheQuoteandReset(pickedTime);
+    
 })
 // start Action 
 
@@ -198,30 +181,95 @@ const updateUI = function(){
     feedback_message.textContent = getFeedBack(getWPM);
 }
 
+let isIntervalRunning = true ;
+let startInterval ;
+let booltimeCheck = false ;
+let time; 
 const startAction = function(){
-     let time = Number(document.getElementById('timer').value);
+    if (isIntervalRunning === true) {
+        isIntervalRunning = false ;
+        time = booltimeCheck ? remainingTime : Number(document.getElementById('timer').value);
 
-    displayTime.textContent = `00:${time}`
-    const startInterval = setInterval(()=>{
-       if (time < 0) {
-          clearInterval(startInterval)
-          updateUI();
+        displayTime.textContent = `00:${time}`.padStart(2 , 0)
 
-       }else{
-        time--;
-        displayTime.textContent = `00:${String(time).padStart(2 , 0)}`;
-       }
-    } , 1000)
+         startInterval = setInterval(()=>{
+          if (time <= 0) {
+            clearInterval(startInterval)
+            isIntervalRunning = true;
+            LettersWritten.disabled = true;
+            updateUI();
+
+          }else{
+            time--;
+            displayTime.textContent = `00:${String(time).padStart(2 , 0)}`;
+          }
+        } , 1000)
+    }
+
+}
+const replayFunction = function(){
+    let repeatString = displayedContent.textContent;
+    displayTime.textContent = `00:00`
+    clearInterval(startInterval)
+    isIntervalRunning = true;
+    displayedContent.textContent =  repeatString;
+    wpm.textContent = '--'
+    accuracy.textContent = '--%'
+    feedback_message.textContent = 'Start typing to see feedback'
+    LettersWritten.disabled = false;
+    LettersWritten.value = "";   
+    startAction();
+}
+
+const resetButton = function(){
+    displayTime.textContent = `00:00`
+    clearInterval(startInterval)
+    isIntervalRunning = true;
+    displayedContent.textContent = "A smart developer keeps learning, building projects, and improving skills every single day"
+    wpm.textContent = '--'
+    accuracy.textContent = '--%'
+    feedback_message.textContent = 'Start typing to see feedback'
+    LettersWritten.disabled = false;
+    LettersWritten.value = "";
 }
 // start on click event 
 start.addEventListener('click' , startAction);
 
-// start on keypress event 
+// reset eventlisters
+reset.addEventListener('click' , resetButton);
 
+// replay eventlisters
+replay.addEventListener('click' , replayFunction)
+
+// start on keypress event 
 document.addEventListener('keydown' , function(event){
-   
+   if (event.key === 'Enter') { 
+    resetButton();
+     if (isIntervalRunning === true) { 
+        startAction();
+     }
+   }
 })
 
+// pause eventListener
+
+let remainingTime;
+pause.addEventListener('click' , function(){
+   
+   remainingTime = time ;
+   clearInterval(startInterval)
+   isIntervalRunning = true ;
+   LettersWritten.disabled = true;
+
+})
+resume.addEventListener('click' , function(){
+   booltimeCheck = true;
+   LettersWritten.disabled = false;
+   startAction();
+   booltimeCheck = false;
+   remainingTime = 0;
+
+})
 
 
 

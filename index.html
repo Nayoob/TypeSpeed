@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TypeSpeed</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="fav.icon" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header>
+      <!-- navbar  -->
+      <nav class="navbar">
+        <div class="nav-left">
+          <img
+            style="height: 50px; width: 50px; border-radius: 5px"
+            src="logo.png"
+            alt="logo"
+          />
+          <h2 class="nav-text">Type For Fun</h2>
+        </div>
+      </nav>
+    </header>
+    <!-- main  -->
+    <main class="main">
+      <div class="container">
+        <!-- Left Sidebar -->
+        <div class="left-side-bar">
+          <div class="score-box">
+            <h3>WPM</h3>
+            <p id="wpm">--</p>
+          </div>
+          <div class="score-box">
+            <h3>Accuracy</h3>
+            <p id="accuracy">--%</p>
+          </div>
+          <div class="score-box message-box">
+            <h3>Feedback Message</h3>
+            <p id="message">"Start typing to see feedback"</p>
+          </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="right-side-bar gride-component">
+          <div class="buttons">
+            <button class="start action-btn">Start</button>
+            <button class="pause action-btn">Pause</button>
+            <button class="resume action-btn">Resume</button>
+            <button class="stop action-btn">Stop</button>
+            <button class="replay action-btn">Replay</button>
+          </div>
+          <div class="timer-selector">
+            <div  class="display-time">
+              00:00 
+            </div>
+            <label style="font-size: larger; font-weight: bold" for="timer"
+              >Pick Time:</label
+            >
+            <select id="timer">
+              <option value="15">15 Seconds</option>
+              <option value="30">30 Seconds</option>
+              <option value="60">60 Seconds</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Top and Bottom Bars -->
+        <!-- Top Bar -->
+        <div class="top-bar gride-component">
+          <div id="text-to-type">
+         A smart developer keeps learning, building projects, and improving skills every single day.
+          </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="bottom-bar gride-component">
+          <textarea
+            class="type-box"
+            id="typing-input"
+            placeholder="Start typing here..."
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+    </main>
+
+    <footer></footer>
+    <script src="script.js"></script>
+  </body>
+</html>

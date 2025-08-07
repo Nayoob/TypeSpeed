@@ -10,8 +10,10 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 15vh;
-  width: 100vw;
+  /* height: 15vh; */
+  height: 15%;
+  /* width: 100vw */
+  width: 100%;
   background-color: rgb(4, 4, 26);
   color: wheat;
   padding: 25px 40px;
@@ -39,8 +41,10 @@ a {
 
 /* MAIN */
 .main {
-  height: 85vh;
-  width: 100vw;
+  /* height: 85vh; */
+  /* width: 100vw; */
+  height: 85%;
+  width: 100%;
   background-color: white;
 
 }

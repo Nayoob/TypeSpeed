@@ -1,7 +1,7 @@
 "use strict";
 
 const feedback = {
-  poor_performance: "Keep practicing you'll improve with time!",
+  poor_performance: "bad Performance you need to practice alot myboy!",
   average: "Not bad, but there's room for improvement.",
   moderate_performance: "You're getting better stay consistent!",
   best: "Great job! You're typing like a pro!",
@@ -118,7 +118,11 @@ const timeInminutes = function (timeInseconds) {
   return timeInminutes;
 };
 
-const getFeedBack = function (wpm) {
+const getFeedBack = function (wpm , getAccur) {
+  const acc = getAccur.slice(0 , -1);
+  if(Number(acc) >= 30 && Number(acc) <=40) return feedback.average;
+  if(Number(acc) >= 11 && Number(acc) <= 29) return feedback.poor_performance;
+  if(Number(acc) >= 1 && Number(acc) <= 10) return `Dont focus on speed Initially Type Slowly and Carefully`;
   if (wpm > 100) return feedback.super_excellent;
   else if (wpm >= 80 && wpm <= 100) return feedback.excellent;
   else if (wpm >= 60 && wpm < 80) return feedback.best;
@@ -162,7 +166,7 @@ const updateUI = function () {
   wpm.textContent = getWPM;
   const getAccur = GetAccuracy();
   accuracy.textContent = getAccur;
-  feedback_message.textContent = getFeedBack(getWPM);
+  feedback_message.textContent = getFeedBack(getWPM , getAccur);
 };
 
 let isIntervalRunning = true;
@@ -184,14 +188,15 @@ const startAction = function () {
         isIntervalRunning = true;
         LettersWritten.disabled = true;
         updateUI();
+        LettersWritten.value = "";
+        LettersWritten.disabled = false;
       } else {
         time--;
         displayTime.textContent = `00:${String(time).padStart(2, 0)}`;
       }
     }, 1000);
-    
-    LettersWritten.value = "";
-    LettersWritten.disabled = false;
+
+
   }
 };
 const replayFunction = function () {
